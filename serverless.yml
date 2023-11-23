@@ -4,6 +4,12 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs18.x
+  profile: philip-aws
+  region: eu-north-1
+  iam: 
+    role: arn:aws:iam::724806840307:role/lectures-cloud
+
+
 
 functions:
   api:
@@ -12,3 +18,30 @@ functions:
       - httpApi:
           path: /
           method: get
+
+
+resources:
+  Resources:
+    notesDb:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: notesAPI
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+    noteusersDb:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: noteaccounts
+        AttributeDefinitions:
+          - AttributeName: username
+            AttributeType: S
+        KeySchema:
+          - AttributeName: username
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
